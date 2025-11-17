@@ -5,8 +5,7 @@ async function createPedido(req, res) {
     try {
         const { idCliente, idProduto, quantidade, valorTotal } = req.body;
         if (!idCliente || !idProduto || !quantidade || !valorTotal) return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
-
-
+        
         const pedido = await Pedido.create({ idCliente, idProduto, quantidade, valorTotal });
         res.status(201).json(pedido);
     } catch (err) {

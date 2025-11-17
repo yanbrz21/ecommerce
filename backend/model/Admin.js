@@ -1,8 +1,7 @@
 const { DataTypes } = require('sequelize')
 const db = require('../db/conn')
 
-
-const Cliente = db.define('Cliente', {
+const Admin = db.define('Admin', {
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
@@ -20,14 +19,13 @@ const Cliente = db.define('Cliente', {
             isEmail: true
         }
     },
-    telefone: {
-        type: DataTypes.STRING
-    },
     senha: {
         type: DataTypes.STRING,
         allowNull: false
     },
-}, {timestamps: false, tableName: 'clientes'})
+}, { 
+    timestamps: false,
+    tableName: 'admins'
+})
 
-
-module.exports = Cliente
+module.exports = Admin
