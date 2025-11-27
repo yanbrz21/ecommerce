@@ -22,6 +22,9 @@ const Produto = db.define('Produto', {
     estoque: {
         type: DataTypes.INTEGER,
         defaultValue: 0
+    },
+    imagem: {
+        type: DataTypes.STRING,
     }
 }, {timestamps: false, tableName: 'produtos'})
 

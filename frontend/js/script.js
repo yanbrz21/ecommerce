@@ -5,8 +5,8 @@ const loginForm = document.getElementById('loginForm');
 if (loginForm) {
   loginForm.addEventListener('submit', async e => {
     e.preventDefault();
-    const email = document.getElementById('email').value;
-    const senha = document.getElementById('senha').value;
+    const email = document.getElementById('loginEmail').value;
+    const senha = document.getElementById('loginSenha').value;
 
     const res = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
@@ -15,11 +15,10 @@ if (loginForm) {
     });
 
     const data = await res.json();
-    const message = document.getElementById('message');
+    const message = document.getElementById('loginMessage');
 
     if (res.ok) {
       sessionStorage.setItem('token', data.token);
-      // Redireciona para o dashboard após o login
       window.location.href = 'dashboard.html';
     } else {
       message.textContent = data.message;
@@ -33,10 +32,10 @@ const registerForm = document.getElementById('registerForm');
 if (registerForm) {
   registerForm.addEventListener('submit', async e => {
     e.preventDefault();
-    const nome = document.getElementById('nome').value;
-    const email = document.getElementById('email').value;
-    const senha = document.getElementById('senha').value;
-    const telefone = document.getElementById('telefone').value;
+    const nome = document.getElementById('registerNome').value;
+    const email = document.getElementById('registerEmail').value;
+    const senha = document.getElementById('registerSenha').value;
+    const telefone = document.getElementById('registerTelefone').value;
 
     const res = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
@@ -45,7 +44,7 @@ if (registerForm) {
     });
 
     const data = await res.json();
-    const message = document.getElementById('message');
+    const message = document.getElementById('registerMessage');
 
     if (res.ok) {
       message.textContent = 'Cadastro realizado! Redirecionando...';
