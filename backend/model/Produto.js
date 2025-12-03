@@ -24,7 +24,7 @@ const Produto = db.define('Produto', {
         defaultValue: 0
     },
     imagem: {
-        type: DataTypes.STRING,
+        type: DataTypes.BLOB('long'),
     }
 }, {timestamps: false, tableName: 'produtos'})
 

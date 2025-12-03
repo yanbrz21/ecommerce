@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produto — Color Store</title>
+  <link rel="stylesheet" href="../css/item.css">
+  <script src="../js/item.js" defer></script>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="brand" onclick="window.location.href='index.html'">
+        <div class="logo">Color</div>
+        <h1>Color Store</h1>
+      </div>
+      <button class="btn" onclick="window.location.href='index.html'">Voltar para a página principal</button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="product-images">
+          <img id="mainImg" src="" alt="Produto">
+          <div class="thumbnails" id="thumbnails"></div>
+        </div>
+        <div class="product-details">
+          <h2 id="productTitle">Produto</h2>
+          <div class="price" id="productPrice">R$ 0,00</div>
+          <p id="productDesc">Descrição do produto...</p>
+
+          <div class="controls">
+            <input type="number" id="quantity" min="1" value="1">
+            <button class="btn" id="addToCartBtn">Adicionar ao carrinho</button>
+          </div>
+
+          <div class="user-address" id="userAddress">
+            <h3>Seu endereço</h3>
+            <p id="addressInfo">Carregando endereço...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

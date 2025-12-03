@@ -1,48 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | E-commerce</title>
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
 </head>
+
 <body>
+
   <header>
-    <h1>E-commerce</h1>
-    <nav>
-      <button id="logoutBtn">Logout</button>
-    </nav>
+    <a href="../html/index.html">
+      <h1>ColorStore</h1>
+    </a>
   </header>
+
 
   <div class="container">
     <div class="dashboard-header">
       <h2>Gerenciamento</h2>
       <div>
-        <button class="tab-btn active" data-tab="products">Produtos</button>
-        <button class="tab-btn" data-tab="clients">Clientes</button>
-        <button class="tab-btn" data-tab="orders">Pedidos</button>
+        <button class="tabBtn active" data-tab="products">Produtos</button>
+        <button class="tabBtn" data-tab="clients">Clientes</button>
+        <button class="tabBtn" data-tab="orders">Pedidos</button>
       </div>
     </div>
-    
-    <div id="products" class="tab-content active">
-      <h3>Lista de Produtos</h3>
-      <div class="products-grid" id="productsGrid">
-        </div>
+
+    <div id="products" class="tabContent active">
+      <div class="sectionHeader">
+        <h3>Produtos</h3>
+        <button class="createBtn" data-create="produtos">Criar Produto</button>
+      </div>
+      <div class="grid" id="productsGrid"></div>
     </div>
 
-    <div id="clients" class="tab-content">
-      <h3>Lista de Clientes</h3>
-      <div class="clients-list" id="clientsList">
-        </div>
+    <div id="clients" class="tabContent">
+      <div class="sectionHeader">
+        <h3>Clientes</h3>
+        <button class="createBtn" data-create="clientes">Criar Cliente</button>
+      </div>
+      <div class="grid" id="clientsList"></div>
     </div>
 
-    <div id="orders" class="tab-content">
+    <div id="orders" class="tabContent">
       <h3>Lista de Pedidos</h3>
-      <div class="orders-list" id="ordersList">
-        </div>
+      <div class="grid" id="ordersList"></div>
     </div>
   </div>
 
-  <script src="../js/script.js"></script>
+  <div class="modal" id="editModal">
+    <div class="modalBox">
+      <h3>Editar</h3>
+      <form id="editForm"></form>
+      <button id="saveEdit">Salvar</button>
+      <button class="closeModal">Cancelar</button>
+    </div>
+  </div>
+
+  <div class="modal" id="deleteModal">
+    <div class="modalBox">
+      <h3>Confirmar exclusão?</h3>
+      <button id="confirmDelete">Excluir</button>
+      <button class="closeModal">Cancelar</button>
+    </div>
+  </div>
+
+  <script>
+    const backBtn = document.getElementById('backBtn');
+    backBtn.addEventListener('click', () => {
+      window.location.href = '../index.html';
+    });
+    
+  </script>
+
+  <script src="../js/dashboard.js"></script>
 </body>
+
 </html>

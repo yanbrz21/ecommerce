@@ -2,39 +2,40 @@ const express = require('express');
 const clienteController = require('../controllers/clienteController');
 const produtoController = require('../controllers/produtoController');
 const pedidoController = require('../controllers/pedidoController');
-const authController = require('../controllers/authController');
 const authMiddleware = require('../middleware/authMiddleware');
+const enderecoController = require('../controllers/enderecoController');
 const authRoutes = require('./authRoutes');
+const upload = require('../middleware/upload');
+
 const router = express.Router();
 
 // ------------------- Público -------------------
 router.get('/clientes', clienteController.getAllClientes);
 router.post('/clientes', clienteController.createCliente);
-router.post('/auth/register', authController.register);
-router.post('/auth/login', authController.login);
 
-// ------------------- Auth -------------------
+// Auth (agora totalmente separado)
 router.use('/auth', authRoutes);
 
+// ------------------- Produtos -------------------
+router.get('/produtos', produtoController.getAllProdutos);
+router.get('/produtos/id/:id', produtoController.getProdutoById);
+router.get('/produtos/nome', produtoController.getProdutoByName);
 
+router.post('/produtos', authMiddleware, upload.single('imagem'), produtoController.createProduto);
+router.put('/produtos/:id', authMiddleware, upload.single('imagem'), produtoController.updateProduto);
+router.delete('/produtos/:id', authMiddleware, produtoController.deleteProduto);
 
-
-// ------------------- Privado -------------------
-
+// ------------------- Endereços -------------------
+router.post('/enderecos', authMiddleware, enderecoController.createEndereco);
+router.get('/enderecos/cliente/:idCliente', authMiddleware, enderecoController.getEnderecosByCliente);
+router.put('/enderecos/:id', authMiddleware, enderecoController.updateEndereco);
+router.delete('/enderecos/:id', authMiddleware, enderecoController.deleteEndereco);
 
 // ------------------- Clientes -------------------
 router.get('/clientes/id/:id', authMiddleware, clienteController.getClienteById);
 router.get('/clientes/nome/:nome', authMiddleware, clienteController.getClienteByName);
 router.put('/clientes/:id', authMiddleware, clienteController.updateCliente);
 router.delete('/clientes/:id', authMiddleware, clienteController.deleteCliente);
-
-// ------------------- Produtos -------------------
-router.get('/produtos', authMiddleware, produtoController.getAllProdutos);
-router.get('/produtos/id/:id', authMiddleware, produtoController.getProdutoById);
-router.get('/produtos/nome/:nome', authMiddleware, produtoController.getProdutoByName);
-router.post('/produtos', authMiddleware, produtoController.createProduto);
-router.put('/produtos/:id', authMiddleware, produtoController.updateProduto);
-router.delete('/produtos/:id', authMiddleware, produtoController.deleteProduto);
 
 // ------------------- Pedidos -------------------
 router.get('/pedidos', authMiddleware, pedidoController.getAllPedidos);

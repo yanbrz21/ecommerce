@@ -273,6 +273,14 @@ form button:hover {
     opacity: 0.8;
 }
 
+.product {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 220px; /* ou o tamanho que quiser pro card */
+}
+
+
 /* Tabs */
 .tab-btn {
     background: none;

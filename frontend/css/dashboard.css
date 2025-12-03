@@ -1,0 +1,233 @@
+:root {
+  --bg: #0f0e0e;
+  --card: #181616;
+  --modal: #1e1c1c;
+  --accent: #6c47ff;
+  --danger: #ff4757;
+  --text: #f5f5f5;
+  --soft: #8b8b8b;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  margin: 30px auto;
+  max-width: 1100px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.tabBtn {
+  padding: 10px 20px;
+  border: none;
+  background: #181616;
+  color: var(--text);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: .2s;
+}
+
+.tabBtn:hover {
+  background: #242222;
+}
+
+.tabBtn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.createBtn {
+  padding: 10px 15px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.createBtn:hover {
+  opacity: .8;
+}
+
+.tabContent {
+  display: none;
+}
+
+.tabContent.active {
+  display: block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: .2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h4 {
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: var(--soft);
+}
+
+.cardBtns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.cardBtns button {
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: .2s;
+}
+
+.editBtn {
+  background: var(--accent);
+  color: #fff;
+}
+
+.editBtn:hover {
+  opacity: .8;
+}
+
+.deleteBtn {
+  background: var(--danger);
+  color: #fff;
+}
+
+.deleteBtn:hover {
+  opacity: .8;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modalBox {
+  background: var(--modal);
+  padding: 25px;
+  width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.3);
+  animation: fadeIn .2s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(.95);}
+  to {opacity: 1; transform: scale(1);}
+}
+
+.modalBox h3 {
+  margin-bottom: 15px;
+}
+
+.modalBox form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modalBox input, 
+.modalBox select {
+  padding: 10px;
+  border: 1px solid #333;
+  background: #141414;
+  color: #fff;
+  border-radius: 8px;
+}
+
+.modalBox button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+#saveEdit {
+  background: var(--accent);
+  color: #fff;
+}
+
+#saveEdit:hover {
+  opacity: .8;
+}
+
+.closeModal {
+  background: #333;
+  color: #fff;
+}
+
+.closeModal:hover {
+  opacity: .8;
+}
+
+#confirmDelete {
+  background: var(--danger);
+  color: #fff;
+}
+
+.alertPopup {
+    position: fixed;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4caf50;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: .3s;
+    z-index: 9999;
+}
+
+.alertPopup.active {
+    top: 20px;
+}

@@ -4,7 +4,6 @@ const Pedido = require('./Pedido')
 const Produto = require('./Produto')
 const Estoque = require('./Estoque')
 const Endereco = require('./Endereco')
-const Admin = require('./Admin')
 
 // Cliente 1 - N Pedidos
 Cliente.hasMany(Pedido, { foreignKey: 'clienteId', as: 'pedidos', onDelete: 'CASCADE' })

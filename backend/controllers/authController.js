@@ -3,7 +3,7 @@ const { hashPassword, comparePassword, generateToken, findUserByEmail } = requir
 
 async function register(req, res) {
   try {
-    const { nome, email, senha, telefone } = req.body;
+    const { nome, email, senha, telefone, role } = req.body;
     if (!nome || !email || !senha) return res.status(400).json({ message: 'nome, email e senha são obrigatórios' });
 
     const existing = await findUserByEmail(email);
@@ -11,11 +11,15 @@ async function register(req, res) {
 
     const hashed = await hashPassword(senha);
 
-    // usar model Cliente direto para criar (não expõe senha no retorno)
     const Cliente = require('../model/Cliente');
-    const novo = await Cliente.create({ nome, email, senha: hashed, telefone });
+    const novo = await Cliente.create({ 
+      nome, 
+      email, 
+      senha: hashed, 
+      telefone, 
+      role: role || 'user' // default role
+    });
 
-    // retornar sem senha
     const { senha: _, ...userWithoutSenha } = novo.toJSON();
     res.status(201).json(userWithoutSenha);
   } catch (err) {
@@ -37,14 +41,14 @@ async function login(req, res) {
 
     const token = generateToken({ id: user.id, email: user.email });
 
-    // retorna token e infos básicas (sem senha)
     res.json({
       token,
       user: {
         id: user.id,
         nome: user.nome,
         email: user.email,
-        telefone: user.telefone
+        telefone: user.telefone,
+        role: user.role || 'user' // garante que role sempre exista
       }
     });
   } catch (err) {

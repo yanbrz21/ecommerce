@@ -27,6 +27,15 @@ const Cliente = db.define('Cliente', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    role: {
+        type: DataTypes.ENUM('user', 'admin'),
+        defaultValue: 'user'
+    },
+    cpf: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: true
+    }
 }, {timestamps: false, tableName: 'clientes'})
 
 
