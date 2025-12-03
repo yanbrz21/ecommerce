@@ -70,6 +70,7 @@ loginForm.addEventListener('submit', async e => {
     loginMessage.className = 'message success'
     localStorage.setItem('token', data.token)
     localStorage.setItem('user', JSON.stringify(data.user))
+
     setTimeout(() => {
       document.getElementById('loginModal').style.display = 'none'
       applyUserUI()

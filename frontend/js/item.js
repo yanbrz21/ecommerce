@@ -14,7 +14,7 @@ function arrayBufferToBase64(buffer) {
 
 async function loadProduct(productId) {
   try {
-    const res = await fetch(`http://localhost:3000/produtos/${productId}`);
+    const res = await fetch(`http://localhost:3000/produtos/id/${productId}`);
     if (!res.ok) throw new Error('Produto não encontrado');
     const product = await res.json();
 
@@ -23,7 +23,7 @@ async function loadProduct(productId) {
     document.getElementById('productDesc').textContent = product.descricao;
     document.getElementById('productPrice').textContent = Number(product.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    // thumbnails (se tiver mais imagens)
+    // thumbnails
     const thumbnailsContainer = document.getElementById('thumbnails');
     thumbnailsContainer.innerHTML = '';
     if (product.imagens && product.imagens.length > 0) {
@@ -47,15 +47,26 @@ async function loadUserAddress() {
   }
 
   try {
-    const res = await fetch(`http://localhost:3000/enderecos/${user.id}`);
+    const token = localStorage.getItem('token');
+    const res = await fetch(`http://localhost:3000/enderecos/cliente/${user.id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
     if (!res.ok) throw new Error('Endereço não encontrado');
-    const addr = await res.json();
+
+    const addrList = await res.json();
+    if (!addrList || addrList.length === 0) {
+      addressInfo.textContent = 'Endereço não cadastrado.';
+      return;
+    }
+
+    const addr = addrList[0]; // pegar o primeiro endereço
     addressInfo.innerHTML = `
       CEP: ${addr.cep}<br>
-      Logradouro: ${addr.logradouro}<br>
-      Bairro: ${addr.bairro}<br>
-      Cidade: ${addr.localidade}<br>
-      UF: ${addr.uf}
+      Logradouro: ${addr.logradouro || '-'}<br>
+      Bairro: ${addr.bairro || '-'}<br>
+      Cidade: ${addr.localidade || '-'}<br>
+      UF: ${addr.uf || '-'}
     `;
   } catch {
     addressInfo.textContent = 'Endereço não encontrado.';
@@ -73,7 +84,6 @@ document.getElementById('addToCartBtn').addEventListener('click', () => {
   alert(`Adicionado ${qty} unidade(s) ao carrinho`);
 });
 
-// carregar produto e endereço ao abrir a página
 const productId = getProductIdFromURL();
 if (productId) loadProduct(productId);
 loadUserAddress();
