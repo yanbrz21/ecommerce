@@ -1,28 +1,29 @@
 const { DataTypes } = require('sequelize')
 const db = require('../db/conn')
 
-const Pedido = db.define('Pedido', {
+const PedidoItem = db.define('PedidoItem', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true
   },
-  idCliente: {
+  idPedido: {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false
   },
-  valorTotal: {
+
+  idProduto: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false
+  },
+  quantidade: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  valorUnit: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false
-  },
-  metodoPagamento: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  status: {
-    type: DataTypes.STRING,
-    defaultValue: 'pago'
   }
-}, { tableName: 'pedidos' })
+}, { tableName: 'pedidoItens' })
 
-module.exports = Pedido
+module.exports = PedidoItem

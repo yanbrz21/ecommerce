@@ -393,7 +393,7 @@
           <div class="muted" style="font-size:13px">E-commerce para gamers!</div>
         </div>
       </div>
-      <div id="userInfo"></div>
+      <a href="../html/profile.html"><div id="userInfo"></div></a>
       <div class="nav-actions">
         <div class="search">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -461,7 +461,8 @@
         <div id="cartTotal" style="font-weight:800">R$ 0,00</div>
       </div>
       <div style="margin-top:10px;display:flex;gap:8px">
-        <button class="btn" id="checkout">Finalizar compra</button>
+        <a href="../html/checkout.html"><button class="btn" id="checkout" >Finalizar compra</button></a>
+        
         <button class="ghost" id="closeCart">Continuar comprando</button>
       </div>
     </div>
@@ -565,75 +566,63 @@
     function formatBRL(v) { return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) }
 
     function renderProducts(list) {
-      grid.innerHTML = '';
+      grid.innerHTML = ''
       list.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'product';
+        const div = document.createElement('div')
+        div.className = 'product'
+        div.style.cursor = 'pointer'
+        div.onclick = () => {
+          window.location.href = `./item.html?id=${p.id}`
+        }
 
-        const thumb = document.createElement('div');
-        thumb.className = 'thumb';
-        const img = document.createElement('img');
-        img.src = p.image;
-        img.style.width = '50%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-        img.style.borderRadius = '10px';
-        thumb.appendChild(img);
+        const thumb = document.createElement('div')
+        thumb.className = 'thumb'
+        const img = document.createElement('img')
+        img.src = p.image
+        img.style.width = '50%'
+        img.style.height = '100%'
+        img.style.objectFit = 'cover'
+        img.style.borderRadius = '10px'
+        thumb.appendChild(img)
 
-        const info = document.createElement('div');
-        info.style.display = 'flex';
-        info.style.justifyContent = 'space-between';
-        info.style.alignItems = 'center';
+        const info = document.createElement('div')
+        info.style.display = 'flex'
+        info.style.justifyContent = 'space-between'
+        info.style.alignItems = 'center'
 
-        const infoLeft = document.createElement('div');
-        const title = document.createElement('div');
-        title.style.fontWeight = '700';
-        title.textContent = p.title;
-        const desc = document.createElement('div');
-        desc.className = 'muted';
-        desc.style.marginTop = '6px';
-        desc.style.fontSize = '13px';
-        desc.textContent = p.desc;
-        infoLeft.appendChild(title);
-        infoLeft.appendChild(desc);
+        const infoLeft = document.createElement('div')
+        const title = document.createElement('div')
+        title.style.fontWeight = '700'
+        title.textContent = p.title
+        const desc = document.createElement('div')
+        desc.className = 'muted'
+        desc.style.marginTop = '6px'
+        desc.style.fontSize = '13px'
+        desc.textContent = p.desc
+        infoLeft.appendChild(title)
+        infoLeft.appendChild(desc)
 
-        const infoRight = document.createElement('div');
-        infoRight.style.textAlign = 'right';
-        const tag = document.createElement('div');
-        tag.className = 'tag';
-        tag.textContent = p.tag;
-        const price = document.createElement('div');
-        price.className = 'price';
-        price.style.marginTop = '10px';
-        price.textContent = formatBRL(p.price);
-        infoRight.appendChild(tag);
-        infoRight.appendChild(price);
+        const infoRight = document.createElement('div')
+        infoRight.style.textAlign = 'right'
+        const tag = document.createElement('div')
+        tag.className = 'tag'
+        tag.textContent = p.tag
+        const price = document.createElement('div')
+        price.className = 'price'
+        price.style.marginTop = '10px'
+        price.textContent = formatBRL(p.price)
+        infoRight.appendChild(tag)
+        infoRight.appendChild(price)
 
-        info.appendChild(infoLeft);
-        info.appendChild(infoRight);
+        info.appendChild(infoLeft)
+        info.appendChild(infoRight)
 
-        const actions = document.createElement('div');
-        actions.style.display = 'flex';
-        actions.style.gap = '8px';
-        actions.style.justifyContent = 'space-between';
-        actions.style.alignItems = 'center';
-        const btnView = document.createElement('button');
-        btnView.className = 'ghost';
-        btnView.textContent = 'Ver';
-        btnView.onclick = () => view(p.id);
-        const btnAdd = document.createElement('button');
-        btnAdd.className = 'btn';
-        btnAdd.textContent = 'Adicionar';
-        btnAdd.onclick = () => addToCart(p.id);
-        actions.appendChild(btnView);
-        actions.appendChild(btnAdd);
-
-        div.appendChild(thumb);
-        div.appendChild(info);
-        div.appendChild(actions);
-        grid.appendChild(div);
-      });
+        div.appendChild(thumb)
+        div.appendChild(info)
+        grid.appendChild(div)
+      })
     }
+
 
 
     function applyFilters() {
@@ -647,38 +636,80 @@
     }
 
     // cart functions
-    function addToCart(id) {
-      const p = products.find(x => x.id === id);
-      if (!p) return;
-      state.cart[id] = (state.cart[id] || 0) + 1;
-      updateCartUI();
-      flash(`Adicionado: ${p.title}`);
-    }
-    function addPromo() {
-      addToCart(1); addToCart(2); addToCart(3);
-      openCart();
-    }
-    function updateCartUI() {
-      const keys = Object.keys(state.cart);
-      const totalCount = keys.reduce((s, k) => s + state.cart[k], 0);
-      cartCount.textContent = totalCount;
-      cartList.innerHTML = '';
-      let total = 0;
-      keys.forEach(k => {
-        const p = products.find(x => x.id == k);
-        const qty = state.cart[k];
-        total += p.price * qty;
-        const it = document.createElement('div'); it.className = 'cart-item';
-        it.innerHTML = `<div class="mini">${p.title.split(' ')[0]}</div><div style="flex:1"><div style="font-weight:700">${p.title}</div><div class="muted">${formatBRL(p.price)} x ${qty}</div></div><div style="display:flex;flex-direction:column;gap:6px"><button class="ghost" onclick="dec(${p.id})">-</button><button class="btn" onclick="inc(${p.id})">+</button></div>`;
-        cartList.appendChild(it);
-      });
-      cartTotal.textContent = formatBRL(total);
-    }
-    function inc(id) { state.cart[id] = (state.cart[id] || 0) + 1; updateCartUI(); }
-    function dec(id) { if (!state.cart[id]) return; state.cart[id]--; if (state.cart[id] <= 0) delete state.cart[id]; updateCartUI(); }
+    async function loadCartFromDb() {
+      const token = localStorage.getItem('token')
+      if (!token) return
 
-    function openCart() { cartModal.style.display = 'flex'; cartModal.setAttribute('aria-hidden', 'false') }
-    function closeCart() { cartModal.style.display = 'none'; cartModal.setAttribute('aria-hidden', 'true') }
+      const res = await fetch('http://localhost:3000/cart', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      const data = await res.json()
+
+      cartList.innerHTML = ''
+      let total = 0
+      let totalCount = 0
+
+      if (!Array.isArray(data)) return
+
+      data.forEach(item => {
+        total += Number(item.Produto.valor) * item.quantidade
+        totalCount += item.quantidade
+
+        const it = document.createElement('div')
+        it.className = 'cart-item'
+        it.innerHTML = `
+      <div class="mini">${item.Produto.nome.split(' ')[0]}</div>
+      <div style="flex:1">
+        <div style="font-weight:700">${item.Produto.nome}</div>
+        <div class="muted">${formatBRL(item.Produto.valor)} x ${item.quantidade}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <button class="ghost" onclick="dec(${item.Produto.id}, ${item.quantidade})">-</button>
+        <button class="btn" onclick="inc(${item.Produto.id}, ${item.quantidade})">+</button>
+      </div>
+    `
+        cartList.appendChild(it)
+      })
+
+      cartTotal.textContent = formatBRL(total)
+      cartCount.textContent = totalCount
+    }
+
+    async function updateQuantity(idProduto, quantidade) {
+      const token = localStorage.getItem('token')
+
+      await fetch('http://localhost:3000/cart/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ idProduto, quantidade })
+      })
+
+      loadCartFromDb()
+    }
+
+    function inc(idProduto, quantidadeAtual) {
+      updateQuantity(idProduto, quantidadeAtual + 1)
+    }
+
+    function dec(idProduto, quantidadeAtual) {
+      updateQuantity(idProduto, quantidadeAtual - 1)
+    }
+
+    function openCart() {
+      cartModal.style.display = 'flex'
+      cartModal.setAttribute('aria-hidden', 'false')
+      loadCartFromDb()
+    }
+
+    function closeCart() {
+      cartModal.style.display = 'none'
+      cartModal.setAttribute('aria-hidden', 'true')
+    }
+
 
     document.getElementById('openCart').addEventListener('click', () => { openCart(); })
     document.getElementById('closeCart').addEventListener('click', () => { closeCart(); })
@@ -695,7 +726,9 @@
     }
 
     // initial render
-    applyFilters();
+    applyFilters()
+    loadCartFromDb()
+
   </script>
 </body>
 

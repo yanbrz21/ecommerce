@@ -23,6 +23,13 @@ async function loadProduct(productId) {
     document.getElementById('productDesc').textContent = product.descricao;
     document.getElementById('productPrice').textContent = Number(product.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
+    // mostrar estoque
+    const estoqueEl = document.createElement('div');
+    estoqueEl.id = 'productStock';
+    estoqueEl.style.color = '#fff';
+    estoqueEl.textContent = `Estoque disponível: ${product.estoque}`;
+    document.querySelector('.product-details').appendChild(estoqueEl);
+
     // thumbnails
     const thumbnailsContainer = document.getElementById('thumbnails');
     thumbnailsContainer.innerHTML = '';
@@ -60,7 +67,7 @@ async function loadUserAddress() {
       return;
     }
 
-    const addr = addrList[0]; // pegar o primeiro endereço
+    const addr = addrList[0];
     addressInfo.innerHTML = `
       CEP: ${addr.cep}<br>
       Logradouro: ${addr.logradouro || '-'}<br>
@@ -73,16 +80,37 @@ async function loadUserAddress() {
   }
 }
 
-document.getElementById('addToCartBtn').addEventListener('click', () => {
-  const qty = parseInt(document.getElementById('quantity').value);
-  const productId = getProductIdFromURL();
-  if (!productId) return;
+document.getElementById('addToCartBtn').addEventListener('click', async () => {
+  const qty = parseInt(document.getElementById('quantity').value)
+  const productId = getProductIdFromURL()
+  const token = localStorage.getItem('token')
 
-  let cart = JSON.parse(localStorage.getItem('cart')) || {};
-  cart[productId] = (cart[productId] || 0) + qty;
-  localStorage.setItem('cart', JSON.stringify(cart));
-  alert(`Adicionado ${qty} unidade(s) ao carrinho`);
-});
+  if (!productId || !token) {
+    alert('Faça login para adicionar ao carrinho')
+    return
+  }
+
+  // buscar produto para verificar estoque
+  const productRes = await fetch(`http://localhost:3000/produtos/id/${productId}`);
+  const product = await productRes.json();
+  if (qty > product.estoque) {
+    alert(`Quantidade solicitada excede o estoque disponível (${product.estoque})`)
+    return
+  }
+
+  for (let i = 0; i < qty; i++) {
+    await fetch('http://localhost:3000/cart/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ idProduto: productId })
+    })
+  }
+
+  alert(`Adicionado ${qty} unidade(s) ao carrinho`)
+})
 
 const productId = getProductIdFromURL();
 if (productId) loadProduct(productId);

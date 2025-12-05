@@ -84,6 +84,7 @@ function openEdit(type, item) {
     editType = type
     editId = item.id
     editForm.innerHTML = ''
+
     if (type === 'produtos') {
         createLabeledInput('nome', item.nome)
         createLabeledInput('descricao', item.descricao)
@@ -91,6 +92,7 @@ function openEdit(type, item) {
         createLabeledInput('estoque', item.estoque)
         createLabeledFile('imagem')
     }
+
     if (type === 'clientes') {
         createLabeledInput('nome', item.nome)
         createLabeledInput('email', item.email)
@@ -98,13 +100,22 @@ function openEdit(type, item) {
         createLabeledInput('senha', '')
         createLabeledSelect('role', ['user', 'admin'], item.role)
     }
+
     if (type === 'pedidos') {
-        createLabeledInput('quantidade', item.quantidade)
         createLabeledInput('valorTotal', item.valorTotal)
-        createLabeledInput('dataPedido', item.dataPedido)
-        createLabeledInput('clienteId', item.clienteId)
-        createLabeledInput('produtoId', item.produtoId)
+        createLabeledInput('metodoPagamento', item.metodoPagamento)
+        createLabeledInput('idCliente', item.idCliente)
+        // Itens do pedido (não editável diretamente, mas mostramos)
+        const itensDiv = document.createElement('div')
+        itensDiv.innerHTML = '<h5>Itens:</h5>'
+        item.itens.forEach(i => {
+            const p = document.createElement('p')
+            p.textContent = `${i.nome} - Quantidade: ${i.quantidade} - Valor Unit.: R$ ${i.valorUnit}`
+            itensDiv.appendChild(p)
+        })
+        editForm.appendChild(itensDiv)
     }
+
     editModal.classList.add('active')
 }
 
@@ -271,13 +282,17 @@ async function loadOrders() {
     data.forEach(o => {
         const card = document.createElement('div')
         card.className = 'card'
+
+        const itensHtml = o.itens.map(item => `
+            <li>${item.nome} - Quantidade: ${item.quantidade} - Valor Unit.: R$ ${item.valorUnit}</li>
+        `).join('')
+
         card.innerHTML = `
       <h4>Pedido #${o.id}</h4>
-      <p>Quantidade: ${o.quantidade}</p>
       <p>Valor Total: R$ ${o.valorTotal}</p>
-      <p>Data: ${o.dataPedido}</p>
-      <p>Cliente: ${o.clienteId}</p>
-      <p>Produto: ${o.produtoId}</p>
+      <p>Método Pagamento: ${o.metodoPagamento}</p>
+      <p>Cliente ID: ${o.idCliente}</p>
+      <ul>${itensHtml}</ul>
       <div class="cardBtns">
         <button class="editBtn">Editar</button>
         <button class="deleteBtn">Excluir</button>

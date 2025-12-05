@@ -6,6 +6,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const enderecoController = require('../controllers/enderecoController');
 const authRoutes = require('./authRoutes');
 const upload = require('../middleware/upload');
+const cartController = require('../controllers/cartController')
 
 const router = express.Router();
 
@@ -38,10 +39,17 @@ router.put('/clientes/:id', authMiddleware, clienteController.updateCliente);
 router.delete('/clientes/:id', authMiddleware, clienteController.deleteCliente);
 
 // ------------------- Pedidos -------------------
-router.get('/pedidos', authMiddleware, pedidoController.getAllPedidos);
-router.get('/pedidos/:id', authMiddleware, pedidoController.getPedidoById);
-router.post('/pedidos', authMiddleware, pedidoController.createPedido);
-router.put('/pedidos/:id', authMiddleware, pedidoController.updatePedido);
-router.delete('/pedidos/:id', authMiddleware, pedidoController.deletePedido);
+router.post('/pedidos/checkout', authMiddleware, pedidoController.checkout)
+router.get('/pedidos/usuario/:idCliente', authMiddleware, pedidoController.getPedidosByUsuario)
+router.get('/pedidos', authMiddleware, pedidoController.getTodosPedidos)
+router.put('/pedidos/:id', authMiddleware, pedidoController.updatePedido)
+router.delete('/pedidos/:id', authMiddleware, pedidoController.deletePedido)
+
+
+// ------------------- Carrinho -------------------
+router.post('/cart/add', authMiddleware, cartController.addToCart)
+router.get('/cart', authMiddleware, cartController.getCart)
+router.post('/cart/update', authMiddleware, cartController.updateQuantity)
+
 
 module.exports = router;

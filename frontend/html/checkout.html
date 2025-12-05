@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Finalizar Compra</title>
+  <script src="../js/checkout.js" defer></script>
+  <link rel="stylesheet" href="../css/checkout.css">
+</head>
+<body>
+    <a href="../html/index.html" class="checkoutBackButton">← Voltar</a>
+
+  <div class="checkoutContainer">
+
+    <div class="checkoutLeft">
+      <h2 class="checkoutTitle">Endereço de entrega</h2>
+      <div id="addressInfo"></div>
+
+      <h2 class="checkoutTitle" style="margin-top: 24px;">Produtos</h2>
+      <div id="checkoutItems" class="checkoutItems"></div>
+    </div>
+
+    <div class="checkoutRight">
+      <h2 class="checkoutTitle">Resumo</h2>
+
+      <div class="checkoutResumo">
+        <div class="checkoutLinha">
+          <span>Total</span>
+          <span id="checkoutTotal">R$ 0,00</span>
+        </div>
+      </div>
+
+      <div class="checkoutForm">
+        <select id="paymentMethod">
+          <option value="pix">Pix</option>
+          <option value="boleto">Boleto</option>
+          <option value="cartao">Cartão</option>
+        </select>
+
+        <button class="checkoutButton" id="finishPurchase">
+          Finalizar Compra
+        </button>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
